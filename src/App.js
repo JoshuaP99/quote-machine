@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import React from 'react';
 import './App.css';
+import QuoteBox from './components/QuoteBox';
+import Quotes from './components/Quotes';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  randomQuote(){
+    const randomNumber = Math.floor(Math.random() * Quotes.length);
+    return Quotes[randomNumber]
+  }
+
+  shuffleQuotes(array){
+    return array.sort(()=>Math.random()-0.5)
+  }
+  
+  constructor() {
+    const randomNumber = Math.floor(Math.random() * Quotes.length);
+    super();
+    this.state = {
+      quote: Quotes[randomNumber].quote,
+      author: Quotes[randomNumber].author,
+    };
+  }
+
+  handleClick = () => {
+    const generateRandomQuote = this.randomQuote();
+    this.setState({
+      quote: generateRandomQuote.quote,
+      author: generateRandomQuote.author
+    });
+    this.shuffleQuotes(Quotes)
+  };
+
+  render() {
+    return (
+      <QuoteBox handleClick={this.handleClick}{...this.state}/>
+    );
+  }
 }
 
 export default App;
